@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BookerToDo.Views.MainListPage"
+             Title="ToDo List">
+
+    <Grid>
+
+        <CollectionView x:Name="todoList"
+                        SelectionMode="None">
+
+            <CollectionView.ItemTemplate>
+
+                <DataTemplate>
+
+                    <StackLayout Spacing="0">
+
+                        <StackLayout Orientation="Horizontal"
+                                     HeightRequest="50"
+                                     Padding="16, 0"
+                                     Spacing="6">
+
+                            <CheckBox Color="Gray"
+                                      VerticalOptions="Center">
+
+                                <CheckBox.Triggers>
+
+                                    <Trigger TargetType="CheckBox"
+                                             Property="IsChecked"
+                                             Value="True">
+
+                                        <Setter Property="Color"
+                                                Value="#2196F3"/>
+
+                                    </Trigger>
+                                    
+                                </CheckBox.Triggers>
+                                
+                            </CheckBox>
+
+                            <Label Text="Do something"
+                                   FontSize="Body"
+                                   MaxLines="1"
+                                   LineBreakMode="TailTruncation"
+                                   VerticalOptions="Center"/>
+
+                        </StackLayout>
+
+                        <BoxView BackgroundColor="LightGray"
+                                 HeightRequest="1"
+                                 HorizontalOptions="Fill"/>
+
+                    </StackLayout>
+
+                </DataTemplate>
+
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+        <Button Text="+"
+                FontSize="Title"
+                HeightRequest="64"
+                WidthRequest="64"
+                CornerRadius="32"
+                BackgroundColor="#2196F3"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="16"
+                Clicked="OnButtonClicked"/>
+
+    </Grid>
+
+</ContentPage>
