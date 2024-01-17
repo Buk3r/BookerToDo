@@ -6,57 +6,58 @@
 
     <Grid>
 
-        <CollectionView x:Name="todoList"
-                        SelectionMode="None">
+        <ListView x:Name="todoList"
+                  RowHeight="50"
+                  SelectionMode="None"
+                  SeparatorColor="LightGray">
 
-            <CollectionView.ItemTemplate>
+            <ListView.ItemTemplate>
 
                 <DataTemplate>
 
-                    <StackLayout Spacing="0">
+                    <ViewCell>
 
-                        <StackLayout Orientation="Horizontal"
-                                     HeightRequest="50"
-                                     Padding="16, 0"
-                                     Spacing="6">
+                        <ViewCell.View>
 
-                            <CheckBox Color="Gray"
-                                      VerticalOptions="Center">
+                            <StackLayout Orientation="Horizontal"
+                                         Padding="16, 0"
+                                         Spacing="6">
 
-                                <CheckBox.Triggers>
+                                <CheckBox Color="Gray"
+                                          VerticalOptions="Center">
 
-                                    <Trigger TargetType="CheckBox"
-                                             Property="IsChecked"
-                                             Value="True">
+                                    <CheckBox.Triggers>
 
-                                        <Setter Property="Color"
-                                                Value="#2196F3"/>
+                                        <Trigger TargetType="CheckBox"
+                                                 Property="IsChecked"
+                                                 Value="True">
 
-                                    </Trigger>
-                                    
-                                </CheckBox.Triggers>
-                                
-                            </CheckBox>
+                                            <Setter Property="Color"
+                                                    Value="#2196F3"/>
 
-                            <Label Text="Do something"
-                                   FontSize="Body"
-                                   MaxLines="1"
-                                   LineBreakMode="TailTruncation"
-                                   VerticalOptions="Center"/>
+                                        </Trigger>
 
-                        </StackLayout>
+                                    </CheckBox.Triggers>
 
-                        <BoxView BackgroundColor="LightGray"
-                                 HeightRequest="1"
-                                 HorizontalOptions="Fill"/>
+                                </CheckBox>
 
-                    </StackLayout>
+                                <Label Text="Do something"
+                                       FontSize="Body"
+                                       MaxLines="1"
+                                       LineBreakMode="TailTruncation"
+                                       VerticalOptions="Center"/>
+
+                            </StackLayout>
+
+                        </ViewCell.View>
+
+                    </ViewCell>
 
                 </DataTemplate>
 
-            </CollectionView.ItemTemplate>
+            </ListView.ItemTemplate>
 
-        </CollectionView>
+        </ListView>
 
         <Button Text="+"
                 FontSize="Title"

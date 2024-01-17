@@ -34,9 +34,9 @@ namespace BookerToDo.Views
             };
         }
 
-        private void OnButtonClicked(object sender, System.EventArgs e)
+        private async void OnButtonClicked(object sender, System.EventArgs e)
         {
-            Navigation.PushAsync(new AddEditTask());
+            await Navigation.PushAsync(new AddEditTaskPage());
         }
     }
 }
