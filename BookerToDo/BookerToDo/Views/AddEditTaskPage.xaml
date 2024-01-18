@@ -7,7 +7,7 @@
     <StackLayout Padding="16, 16, 16, 16">
 
         <Entry Placeholder="Title"
-               Text="{Binding TaskName}"
+               Text="{Binding TaskTitle}"
                MaxLength="50"/>
 
         <Editor Placeholder="Description"

@@ -7,11 +7,18 @@ namespace BookerToDo.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddEditTaskPage : ContentPage
     {
+        private readonly AddEditTaskPageViewModel _viewModel = new AddEditTaskPageViewModel();
+
         public AddEditTaskPage()
         {
             InitializeComponent();
 
-            BindingContext = new AddEditTaskPageViewModel();
+            BindingContext = _viewModel;
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            return _viewModel.OnBackButtonPressed();
         }
     }
 }
