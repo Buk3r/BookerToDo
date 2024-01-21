@@ -13,6 +13,7 @@ namespace BookerToDo.ViewModels
         public AddEditTaskPageViewModel()
         {
             _toDoTaskService = new ToDoTaskService();
+            BackButtonPressedAction = OnBackButtonPressed;
         }
 
         #region -- Public properties --
@@ -37,21 +38,28 @@ namespace BookerToDo.ViewModels
 
         #region -- Public methods --
 
-        public bool OnBackButtonPressed()
+        private async void OnBackButtonPressed()
         {
-            if (!string.IsNullOrWhiteSpace(TaskTitle) 
-                || !string.IsNullOrWhiteSpace(Description))
+            if (App.Current.MainPage is NavigationPage navPage)
             {
-                if (App.Current.MainPage is NavigationPage navPage)
+                if (!string.IsNullOrWhiteSpace(TaskTitle)
+                    || !string.IsNullOrWhiteSpace(Description))
                 {
-                    navPage.CurrentPage.DisplayAlert("Ooops", "Task is not saved", "Ok");
-                }
+                    var isDiscardConfirmed = await navPage.CurrentPage.DisplayAlert(
+                        "Confirm",
+                        "Do you want to discard changes?",
+                        "Yes",
+                        "No");
 
-                return true;
-            }
-            else
-            {
-                return false;
+                    if (isDiscardConfirmed)
+                    {
+                        await navPage.CurrentPage.Navigation.PopAsync();
+                    }
+                }
+                else
+                {
+                    await navPage.CurrentPage.Navigation.PopAsync();
+                }
             }
         }
 
