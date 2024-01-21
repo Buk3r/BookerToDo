@@ -1,6 +1,5 @@
-﻿using BookerToDo.Models;
+﻿using BookerToDo.Models.Task;
 using BookerToDo.Services.ToDoTask;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 

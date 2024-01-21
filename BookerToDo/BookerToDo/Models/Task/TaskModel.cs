@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace BookerToDo.Models
+namespace BookerToDo.Models.Task
 {
     public class TaskModel : IEntityBase
     {
@@ -10,5 +10,7 @@ namespace BookerToDo.Models
         public string Title { get; set; }
 
         public string Description { get; set; }
+
+        public bool IsDone { get; set; }
     }
 }

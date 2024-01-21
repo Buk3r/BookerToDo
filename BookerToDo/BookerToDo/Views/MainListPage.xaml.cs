@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BookerToDo.ViewModels;
+using System.Collections.Generic;
 
 namespace BookerToDo.Views
 {
@@ -8,32 +9,7 @@ namespace BookerToDo.Views
         {
             InitializeComponent();
 
-            todoList.ItemsSource = new List<string>
-            {
-                "string",
-                "string",
-                "string",
-                "string",
-                "string",
-                "string",
-                "string",
-                "string",
-                "string",
-                "string",
-                "string",
-                "string",
-                "string",
-                "string",
-                "string",
-                "string",
-                "string",
-                "string",
-            };
-        }
-
-        private async void OnButtonClicked(object sender, System.EventArgs e)
-        {
-            await Navigation.PushAsync(new AddEditTaskPage());
+            BindingContext = new MainListPageViewModel();
         }
     }
 }

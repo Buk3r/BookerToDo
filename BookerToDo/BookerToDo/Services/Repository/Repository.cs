@@ -1,4 +1,5 @@
 ﻿using BookerToDo.Models;
+using BookerToDo.Models.Task;
 using SQLite;
 using System;
 using System.Collections.Generic;

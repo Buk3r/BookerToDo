@@ -1,4 +1,4 @@
-﻿using BookerToDo.Models;
+﻿using BookerToDo.Models.Task;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,5 +8,7 @@ namespace BookerToDo.Services.ToDoTask
     {
         Task SaveTaskAsync(TaskModel task);
         Task<List<TaskModel>> GetTasksAsync();
+
+        Task DeleteTaskAsync(TaskModel task);
     }
 }
