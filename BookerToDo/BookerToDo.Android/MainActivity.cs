@@ -1,9 +1,10 @@
-﻿using System;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
+using Android.Views;
+using BookerToDo.Views;
+using Xamarin.Forms;
 
 namespace BookerToDo.Droid
 {
@@ -12,17 +13,50 @@ namespace BookerToDo.Droid
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            TabLayoutResource = Resource.Layout.Tabbar;
+            ToolbarResource = Resource.Layout.Toolbar;
+
             base.OnCreate(savedInstanceState);
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
+
+            var toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
+            SetSupportActionBar(toolbar);
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            bool result;
+
+            if (item.ItemId == Android.Resource.Id.Home)
+            {
+                if (App.Current.MainPage is NavigationPage navPage
+                    && navPage.CurrentPage is BaseContentPage page
+                    && page.NavBarBackButtonPressedAction != null)
+                {
+                    page.NavBarBackButtonPressedAction.Invoke();
+                    result = false;
+                }
+                else
+                {
+                    result = base.OnOptionsItemSelected(item);
+                }
+
+            }
+            else
+            {
+                result = base.OnOptionsItemSelected(item);
+            }
+
+            return result;
         }
     }
 }
