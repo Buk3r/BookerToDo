@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="BookerToDo.Views.AddEditTaskPage"
-             Title="Add task">
+<views:BaseContentPage xmlns:views="clr-namespace:BookerToDo.Views"
+                       xmlns="http://xamarin.com/schemas/2014/forms"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       x:Class="BookerToDo.Views.AddEditTaskPage"
+                       Title="Add task">
 
-    <StackLayout Padding="16, 16, 16, 16">
+    <StackLayout Padding="16">
 
         <Entry Placeholder="Title"
                Text="{Binding TaskTitle}"
@@ -23,4 +24,4 @@
 
     </StackLayout>
     
-</ContentPage>
+</views:BaseContentPage>

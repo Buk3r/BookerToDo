@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace BookerToDo.ViewModels
@@ -6,6 +7,12 @@ namespace BookerToDo.ViewModels
     public class BaseViewModel : INotifyPropertyChanged
     {
         #region -- Public properties --
+
+        public Action BackButtonPressedAction { get; protected set; }
+
+        #endregion
+
+        #region -- INotifyPropertyChanged implementation --
 
         public event PropertyChangedEventHandler PropertyChanged;
 

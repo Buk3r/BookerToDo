@@ -1,11 +1,6 @@
-﻿using System.Collections.Generic;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
-namespace BookerToDo.Views
+﻿namespace BookerToDo.Views
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainListPage : ContentPage
+    public partial class MainListPage : BaseContentPage
     {
         public MainListPage()
         {
