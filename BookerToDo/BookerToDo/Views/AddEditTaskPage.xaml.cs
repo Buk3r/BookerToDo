@@ -1,11 +1,8 @@
 ﻿using BookerToDo.ViewModels;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace BookerToDo.Views
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddEditTaskPage : ContentPage
+    public partial class AddEditTaskPage : BaseContentPage
     {
         private readonly AddEditTaskPageViewModel _viewModel = new AddEditTaskPageViewModel();
 
