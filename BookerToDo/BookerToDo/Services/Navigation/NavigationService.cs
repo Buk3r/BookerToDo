@@ -13,26 +13,78 @@ namespace BookerToDo.Services.Navigation
 
         public Task<NavigationResult> NavigateAsync(Page page)
         {
-            return NavigateAsync(page, null, false);
+            return NavigateAsync(page, null);
         }
 
-        public Task<NavigationResult> NavigateAsync(
+        public async Task<NavigationResult> NavigateAsync(
             Page page,
             IDictionary<string, object> parameters)
         {
-            return NavigateAsync(page, parameters, false);
+            var result = new NavigationResult();
+
+            try
+            {
+                var currentPage = GetCurrentPage();
+
+                if (currentPage != null)
+                {
+                    await OnInitializedAsync(page, parameters);
+                    await OnNavigatedToAsync(page, parameters);
+
+                    await currentPage.Navigation.PushAsync(page);
+
+                    result.SetSuccess();
+                }
+                else
+                {
+                    result.SetError("Current page not found!");
+                }
+            }
+            catch (Exception ex)
+            {
+                result.SetException(ex);
+            }
+
+            return result;
         }
 
         public Task<NavigationResult> AbsoluteNavigateAsync(Page page)
         {
-            return NavigateAsync(page, null, true);
+            return AbsoluteNavigateAsync(page, null);
         }
 
-        public Task<NavigationResult> AbsoluteNavigateAsync(
+        public async Task<NavigationResult> AbsoluteNavigateAsync(
             Page page,
             IDictionary<string, object> parameters)
         {
-            return NavigateAsync(page, parameters, true);
+            var result = new NavigationResult();
+
+            try
+            {
+                var currentPage = GetCurrentPage();
+
+                if (currentPage != null)
+                {
+                    await OnInitializedAsync(page, parameters);
+                    await OnNavigatedToAsync(page, parameters);
+
+                    Application.Current.MainPage = new NavigationPage(page);
+                    await currentPage.Navigation.PopToRootAsync();
+
+                    result.SetSuccess();
+                }
+                else
+                {
+                    Application.Current.MainPage = new NavigationPage(page);
+                    result.SetSuccess();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.SetException(ex);
+            }
+
+            return result;
         }
 
         public Task<NavigationResult> GoBackAsync()
@@ -71,47 +123,6 @@ namespace BookerToDo.Services.Navigation
 
         #region -- Private methods --
 
-        private async Task<NavigationResult> NavigateAsync(
-            Page page,
-            IDictionary<string, object> parameters,
-            bool isAbsolute)
-        {
-            var result = new NavigationResult();
-            
-            try
-            {
-                var currentPage = GetCurrentPage();
-
-                if (currentPage != null)
-                {
-                    await OnInitializedAsync(page, parameters);
-                    await OnNavigatedToAsync(page, parameters);
-
-                    if (isAbsolute)
-                    {
-                        Application.Current.MainPage = new NavigationPage(page);
-                        await currentPage.Navigation.PopToRootAsync();
-                    }
-                    else
-                    {
-                        await currentPage.Navigation.PushAsync(page);
-                    }
-
-                    result.SetSuccess();
-                }
-                else
-                {
-                    result.SetError("Current page not found!");
-                }
-            }
-            catch (Exception ex)
-            {
-                result.SetException(ex);
-            }
-
-            return result;
-        }
-
         private Page GetCurrentPage()
         {
             return Application.Current
@@ -124,7 +135,7 @@ namespace BookerToDo.Services.Navigation
             var navigationStack = Application.Current.MainPage?.Navigation?.NavigationStack;
 
             return navigationStack != null
-                ? navigationStack.ElementAtOrDefault(navigationStack.Count - 1)
+                ? navigationStack.ElementAtOrDefault(navigationStack.Count - 2)
                 : null;
         }
 
