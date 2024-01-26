@@ -2,6 +2,7 @@
 <views:BaseContentPage xmlns:views="clr-namespace:BookerToDo.Views"
                        xmlns="http://xamarin.com/schemas/2014/forms"
                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:converters="clr-namespace:BookerToDo.Converters"
                        x:Class="BookerToDo.Views.MainListPage"
                        Title="ToDo List">
 
@@ -59,31 +60,9 @@
                                        FontSize="Body"
                                        MaxLines="1"
                                        LineBreakMode="TailTruncation"
-                                       VerticalOptions="Center">
-
-                                    <!--<Label.Triggers>
-
-                                        <DataTrigger TargetType="Label"
-                                                     Binding="{Binding IsDone}"
-                                                     Value="True">
-
-                                            <Setter Property="TextDecorations"
-                                                    Value="Strikethrough"/>
-
-                                        </DataTrigger>
-
-                                        <DataTrigger TargetType="Label"
-                                                     Binding="{Binding IsDone}"
-                                                     Value="False">
-
-                                            <Setter Property="TextDecorations"
-                                                    Value="None"/>
-
-                                        </DataTrigger>
-
-                                    </Label.Triggers>-->
-                                    
-                                </Label>
+                                       TextDecorations="{Binding IsDone, 
+                                             Converter={converters:IsTaskDoneToTitleDecorationConverter}}"
+                                       VerticalOptions="Center"/>
 
                             </StackLayout>
 
