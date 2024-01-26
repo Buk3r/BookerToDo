@@ -16,7 +16,9 @@ namespace BookerToDo.Services.ToDoTask
 
         public Task SaveTaskAsync(TaskModel task)
         {
-            return _repository.InsertAsync(task);
+            return task.Id == default
+                ? _repository.InsertAsync(task)
+                : _repository.UpdateAsync(task);
         }
 
         public Task<List<TaskModel>> GetTasksAsync()

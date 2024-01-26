@@ -1,5 +1,7 @@
-﻿using BookerToDo.Models.Task;
+﻿using BookerToDo.Extensions;
+using BookerToDo.Models.Task;
 using BookerToDo.Services.ToDoTask;
+using System.Collections.Generic;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -9,6 +11,8 @@ namespace BookerToDo.ViewModels
     {
         private readonly IToDoTaskService _toDoTaskService;
 
+        private TaskViewModel _toDoTask;
+
         public AddEditTaskPageViewModel()
         {
             _toDoTaskService = new ToDoTaskService();
@@ -17,21 +21,44 @@ namespace BookerToDo.ViewModels
 
         #region -- Public properties --
 
-        private string _taskTitle;
-        public string TaskTitle
+        private string _title;
+        public string Title
         {
-            get { return _taskTitle; }
-            set { SetProperty(ref _taskTitle, value); }
+            get { return _title; }
+            set { SetProperty(ref _title, value); }
         }
 
-        private string _description;
-        public string Description
+        private TaskViewModel _currentTask;
+        public TaskViewModel CurrentTask
         {
-            get { return _description; }
-            set { SetProperty(ref _description, value); }
+            get { return _currentTask; }
+            set { SetProperty(ref _currentTask, value); }
         }
 
         public ICommand SaveTaskTapCommand => new Command(OnSaveTaskTapCommand);
+
+        #endregion
+
+        #region -- Overrides --
+
+        public override void Initialize(IDictionary<string, object> parameters)
+        {
+            base.Initialize(parameters);
+
+            if (parameters.TryGetValue(Constants.Navigation.EDIT_TASK, out object parameter)
+                && parameter is TaskModel task)
+            {
+                _toDoTask = task.ToViewModel();
+                CurrentTask = task.ToViewModel();
+                Title = "Edit task";
+            }
+            else
+            {
+                _toDoTask = new TaskViewModel();
+                CurrentTask = new TaskViewModel();
+                Title = "Add task";
+            }
+        }
 
         #endregion
 
@@ -39,26 +66,23 @@ namespace BookerToDo.ViewModels
 
         private async void OnBackButtonPressed()
         {
-            if (App.Current.MainPage is NavigationPage navPage)
+            if (CurrentTask.Title != _toDoTask.Title
+                || CurrentTask.Description != _toDoTask.Description)
             {
-                if (!string.IsNullOrWhiteSpace(TaskTitle)
-                    || !string.IsNullOrWhiteSpace(Description))
-                {
-                    var isDiscardConfirmed = await navPage.CurrentPage.DisplayAlert(
-                        "Confirm",
-                        "Do you want to discard changes?",
-                        "Yes",
-                        "No");
+                var isDiscardConfirmed = await DialogService.DisplayAlert(
+                    "Confirm",
+                    "Do you want to discard changes?",
+                    "Yes",
+                    "No");
 
-                    if (isDiscardConfirmed)
-                    {
-                        await navPage.CurrentPage.Navigation.PopAsync();
-                    }
-                }
-                else
+                if (isDiscardConfirmed)
                 {
-                    await navPage.CurrentPage.Navigation.PopAsync();
+                    await NavigationService.GoBackAsync();
                 }
+            }
+            else
+            {
+                await NavigationService.GoBackAsync();
             }
         }
 
@@ -68,27 +92,15 @@ namespace BookerToDo.ViewModels
 
         private async void OnSaveTaskTapCommand()
         {
-            if (!string.IsNullOrWhiteSpace(TaskTitle))
+            if (!string.IsNullOrWhiteSpace(CurrentTask.Title))
             {
-                var task = new TaskModel
-                {
-                    Title = TaskTitle,
-                    Description = Description,
-                };
+                await _toDoTaskService.SaveTaskAsync(CurrentTask.ToModel());
 
-                await _toDoTaskService.SaveTaskAsync(task);
-
-                if (App.Current.MainPage is NavigationPage navPage)
-                {
-                    await navPage.CurrentPage.Navigation.PopAsync();
-                }
+                await NavigationService.GoBackAsync();
             }
             else
             {
-                if (App.Current.MainPage is NavigationPage navPage)
-                {
-                    await navPage.CurrentPage.DisplayAlert("Ooops", "Title must be not empty", "Ok");
-                }
+                await DialogService.DisplayAlert("Ooops", "Title must be not empty", "Ok");
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using BookerToDo.Views;
+﻿using BookerToDo.Services.Navigation;
+using BookerToDo.Views;
 using Xamarin.Forms;
 
 namespace BookerToDo
@@ -9,7 +10,9 @@ namespace BookerToDo
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new MainListPage());
+            var navigationService = new NavigationService();
+
+            navigationService.AbsoluteNavigateAsync(new MainListPage());
         }
 
         protected override void OnStart()

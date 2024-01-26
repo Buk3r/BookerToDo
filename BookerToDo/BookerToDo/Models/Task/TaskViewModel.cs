@@ -1,4 +1,5 @@
 ﻿using BookerToDo.Helpers;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace BookerToDo.Models.Task
@@ -33,11 +34,11 @@ namespace BookerToDo.Models.Task
             set { SetProperty(ref _isDone, value); }
         }
 
-        private ICommand _deleteTapCommand;
-        public ICommand DeleteTapCommand
+        private ICommand _doneTapCommand;
+        public ICommand DoneTapCommand
         {
-            get { return _deleteTapCommand; }
-            set { SetProperty(ref _deleteTapCommand, value); }
+            get { return _doneTapCommand; }
+            set { SetProperty(ref _doneTapCommand, value); }
         }
 
         private ICommand _editTapCommand;
@@ -45,6 +46,23 @@ namespace BookerToDo.Models.Task
         {
             get { return _editTapCommand; }
             set { SetProperty(ref _editTapCommand, value); }
+        }
+
+        private ICommand _deleteTapCommand;
+        public ICommand DeleteTapCommand
+        {
+            get { return _deleteTapCommand; }
+            set { SetProperty(ref _deleteTapCommand, value); }
+        }
+
+        public override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            base.OnPropertyChanged(propertyName);
+
+            if (propertyName == nameof(IsDone))
+            {
+                DoneTapCommand?.Execute(this);
+            }
         }
     }
 }

@@ -3,16 +3,16 @@
                        xmlns="http://xamarin.com/schemas/2014/forms"
                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                        x:Class="BookerToDo.Views.AddEditTaskPage"
-                       Title="Add task">
+                       Title="{Binding Title}">
 
     <StackLayout Padding="16, 16, 16, 16">
 
         <Entry Placeholder="Title"
-               Text="{Binding TaskTitle}"
+               Text="{Binding CurrentTask.Title}"
                MaxLength="50"/>
 
         <Editor Placeholder="Description"
-                Text="{Binding Description}"
+                Text="{Binding CurrentTask.Description}"
                 HeightRequest="160"
                 MaxLength="200"/>
 

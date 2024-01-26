@@ -16,7 +16,7 @@ namespace BookerToDo.Services.Repository
 
         private Repository()
         {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "bookertodo.db3");
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.DB_NAME);
             _connection = new SQLiteAsyncConnection(path);
             CreateTablesAsync();
         }

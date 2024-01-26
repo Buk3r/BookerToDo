@@ -4,6 +4,7 @@ using BookerToDo.Services.ToDoTask;
 using BookerToDo.Views;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -16,8 +17,9 @@ namespace BookerToDo.ViewModels
         public MainListPageViewModel()
         {
             _toDoTaskService = new ToDoTaskService();
-            InitializeTasks();
         }
+
+        #region -- Public properties --
 
         private List<TaskViewModel> _tasks;
         public List<TaskViewModel> Tasks
@@ -28,47 +30,66 @@ namespace BookerToDo.ViewModels
 
         public ICommand AddTaskTapCommand => new Command(OnAddTaskTapCommand);
 
-        public async void InitializeTasks()
+        #endregion
+
+        #region -- Overrides --
+
+        public override async void OnNavigatedTo(IDictionary<string, object> parameters)
+        {
+            base.OnNavigatedTo(parameters);
+
+            await InitializeTasksAsync();
+        }
+
+        #endregion
+
+        #region -- Private methods --
+
+        private async Task InitializeTasksAsync()
         {
             var taskModels = await _toDoTaskService.GetTasksAsync();
 
             Tasks = taskModels.Select(t => t.ToViewModel(
-                new Command<TaskViewModel>(OnDeleteTaskTapCommand),
-                new Command<TaskViewModel>(OnEditTaskTapCommand))).ToList();
+                new Command<TaskViewModel>(OnDoneTapCommand),
+                new Command<TaskViewModel>(OnEditTaskTapCommand),
+                new Command<TaskViewModel>(OnDeleteTaskTapCommand))).ToList();
         }
 
         private async void OnAddTaskTapCommand()
         {
-            if (App.Current.MainPage is NavigationPage navPage)
+            await NavigationService.NavigateAsync(new AddEditTaskPage());
+        }
+
+        private async void OnDoneTapCommand(TaskViewModel task)
+        {
+            await _toDoTaskService.SaveTaskAsync(task.ToModel());
+        }
+
+        private async void OnEditTaskTapCommand(TaskViewModel task)
+        {
+            var parameters = new Dictionary<string, object>
             {
-                await navPage.CurrentPage.Navigation.PushAsync(new AddEditTaskPage());
-            }
+                { Constants.Navigation.EDIT_TASK, task.ToModel() }
+            };
+
+            await NavigationService.NavigateAsync(new AddEditTaskPage(), parameters);
         }
 
         private async void OnDeleteTaskTapCommand(TaskViewModel task)
         {
-            if (App.Current.MainPage is NavigationPage navPage)
-            {
-                var isDeleteConfirmed = await navPage.CurrentPage.DisplayAlert(
-                        "Confirm",
-                        "Do you want to delete task?",
-                        "Yes",
-                        "No");
+            var isDeleteConfirmed = await DialogService.DisplayAlert(
+                "Confirm",
+                "Do you want to delete task?",
+                "Yes",
+                "No");
 
-                if (isDeleteConfirmed)
-                {
-                    await _toDoTaskService.DeleteTaskAsync(task.ToModel());
-                    InitializeTasks();
-                }
-            }  
-        }
-
-        private async void OnEditTaskTapCommand(TaskViewModel model)
-        {
-            if (App.Current.MainPage is NavigationPage navPage)
+            if (isDeleteConfirmed)
             {
-                await navPage.CurrentPage.Navigation.PushAsync(new AddEditTaskPage());
+                await _toDoTaskService.DeleteTaskAsync(task.ToModel());
+                await InitializeTasksAsync();
             }
         }
+
+        #endregion
     }
 }

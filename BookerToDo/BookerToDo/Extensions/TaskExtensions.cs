@@ -18,8 +18,9 @@ namespace BookerToDo.Extensions
 
         public static TaskViewModel ToViewModel(
             this TaskModel model,
-            ICommand deleteTapCommand = null,
-            ICommand editTapCommand = null)
+            ICommand doneTapCommand = null,
+            ICommand editTapCommand = null,
+            ICommand deleteTapCommand = null)
         {
             return new TaskViewModel
             {
@@ -27,6 +28,7 @@ namespace BookerToDo.Extensions
                 Title = model.Title,
                 Description = model.Description,
                 IsDone = model.IsDone,
+                DoneTapCommand = doneTapCommand,
                 DeleteTapCommand = deleteTapCommand,
                 EditTapCommand = editTapCommand,
             };

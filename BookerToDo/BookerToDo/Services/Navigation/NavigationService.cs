@@ -13,7 +13,7 @@ namespace BookerToDo.Services.Navigation
 
         public Task<NavigationResult> NavigateAsync(Page page)
         {
-            return NavigateAsync(page, null);
+            return NavigateAsync(page, new Dictionary<string, object>());
         }
 
         public async Task<NavigationResult> NavigateAsync(
@@ -50,7 +50,7 @@ namespace BookerToDo.Services.Navigation
 
         public Task<NavigationResult> AbsoluteNavigateAsync(Page page)
         {
-            return AbsoluteNavigateAsync(page, null);
+            return AbsoluteNavigateAsync(page, new Dictionary<string, object>());
         }
 
         public async Task<NavigationResult> AbsoluteNavigateAsync(
@@ -62,12 +62,11 @@ namespace BookerToDo.Services.Navigation
             try
             {
                 var currentPage = GetCurrentPage();
+                await OnInitializedAsync(page, parameters);
+                await OnNavigatedToAsync(page, parameters);
 
                 if (currentPage != null)
                 {
-                    await OnInitializedAsync(page, parameters);
-                    await OnNavigatedToAsync(page, parameters);
-
                     Application.Current.MainPage = new NavigationPage(page);
                     await currentPage.Navigation.PopToRootAsync();
 
@@ -89,7 +88,7 @@ namespace BookerToDo.Services.Navigation
 
         public Task<NavigationResult> GoBackAsync()
         {
-            return GoBackAsync(null);
+            return GoBackAsync(new Dictionary<string, object>());
         }
 
         public async Task<NavigationResult> GoBackAsync(IDictionary<string, object> parameters)
@@ -101,14 +100,14 @@ namespace BookerToDo.Services.Navigation
                 var currentPage = GetCurrentPage();
                 var previousPage = GetPreviousPage();
 
-                if (previousPage != null)
+                if (currentPage != null && previousPage != null)
                 {
                     await OnNavigatedToAsync(previousPage, parameters);
                     await currentPage.Navigation.PopAsync();
                 }
                 else
                 {
-                    result.SetError("Previous page not found!");
+                    result.SetError("Current or previous page not found!");
                 }
             }
             catch (Exception ex)
@@ -139,21 +138,21 @@ namespace BookerToDo.Services.Navigation
                 : null;
         }
 
-        private static async Task OnNavigatedToAsync(Page page, IDictionary<string, object> parameters)
-        {
-            if (page.BindingContext is INavigationAware viewModel)
-            {
-                viewModel.OnNavigatedTo(parameters);
-                await viewModel.OnNavigatedToAsync(parameters);
-            }
-        }
-
         private static async Task OnInitializedAsync(Page page, IDictionary<string, object> parameters)
         {
             if (page.BindingContext is IInitialize viewModel)
             {
                 viewModel.Initialize(parameters);
                 await viewModel.InitializeAsync(parameters);
+            }
+        }
+
+        private static async Task OnNavigatedToAsync(Page page, IDictionary<string, object> parameters)
+        {
+            if (page.BindingContext is INavigationAware viewModel)
+            {
+                viewModel.OnNavigatedTo(parameters);
+                await viewModel.OnNavigatedToAsync(parameters);
             }
         }
 
