@@ -3,9 +3,10 @@
                        xmlns="http://xamarin.com/schemas/2014/forms"
                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                        x:Class="BookerToDo.Views.AddEditTaskPage"
-                       Title="{Binding Title}">
+                       Title="{Binding Title}"
+                       BackgroundColor="{DynamicResource appcolor1}">
 
-    <StackLayout Padding="16, 16, 16, 16">
+    <StackLayout Padding="16">
 
         <Entry Placeholder="{Binding Translate[Title]}"
                Text="{Binding CurrentTask.Title}"
@@ -13,14 +14,12 @@
 
         <Editor Placeholder="{Binding Translate[Description]}"
                 Text="{Binding CurrentTask.Description}"
-                HeightRequest="160"
+                HeightRequest="{DynamicResource height160}"
                 MaxLength="200"/>
 
         <Button Text="{Binding Translate[Save]}"
                 Command="{Binding SaveTaskTapCommand}"
-                TextColor="White"
-                BackgroundColor="#2196F3"
-                TextTransform="None"
+                Style="{DynamicResource buttonStyle1}"
                 VerticalOptions="EndAndExpand"/>
 
     </StackLayout>

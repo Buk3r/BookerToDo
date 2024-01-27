@@ -1,5 +1,4 @@
 ﻿using BookerToDo.ViewModels;
-using System.Collections.Generic;
 
 namespace BookerToDo.Views
 {

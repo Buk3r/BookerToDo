@@ -3,15 +3,14 @@
                        xmlns="http://xamarin.com/schemas/2014/forms"
                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                        x:Class="BookerToDo.Views.LoginPage"
-                       Title="{Binding Translate[LogIn]}">
+                       Title="{Binding Translate[LogIn]}"
+                       BackgroundColor="{DynamicResource appcolor1}">
 
     <Grid>
 
         <Button Text="{Binding Translate[LogIn]}"
                 Command="{Binding LogInTapCommand}"
-                TextColor="White"
-                BackgroundColor="#2196F3"
-                TextTransform="None"
+                Style="{DynamicResource buttonStyle1}"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"/>
 

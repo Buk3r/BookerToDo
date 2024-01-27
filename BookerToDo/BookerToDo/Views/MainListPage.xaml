@@ -5,14 +5,22 @@
                        xmlns:converters="clr-namespace:BookerToDo.Converters"
                        x:Class="BookerToDo.Views.MainListPage"
                        x:Name="page"
-                       Title="{Binding Translate[ToDoList]}">
+                       Title="{Binding Translate[ToDoList]}"
+                       BackgroundColor="{DynamicResource appcolor1}">
+
+    <views:BaseContentPage.ToolbarItems>
+
+        <ToolbarItem IconImageSource="{DynamicResource ic_exit_to_app}"
+                     Command="{Binding LogOutTapCommand}"/>
+
+    </views:BaseContentPage.ToolbarItems>
 
     <Grid>
 
         <ListView ItemsSource="{Binding Tasks}"
-                  RowHeight="50"
+                  RowHeight="{DynamicResource height50}"
                   SelectionMode="None"
-                  SeparatorColor="LightGray">
+                  SeparatorColor="{DynamicResource appcolor4}">
 
             <ListView.ItemTemplate>
 
@@ -36,9 +44,9 @@
 
                             <StackLayout Orientation="Horizontal"
                                          Padding="16, 0"
-                                         Spacing="6">
+                                         Spacing="{DynamicResource spacing6}">
 
-                                <CheckBox Color="Gray"
+                                <CheckBox Color="{DynamicResource appcolor3}"
                                           VerticalOptions="Center"
                                           IsChecked="{Binding IsDone}">
 
@@ -49,7 +57,7 @@
                                                      Value="True">
 
                                             <Setter Property="Color"
-                                                    Value="#2196F3"/>
+                                                    Value="{DynamicResource appcolor2}"/>
 
                                         </DataTrigger>
 
@@ -77,12 +85,11 @@
 
         </ListView>
 
-        <Button Text="+"
-                FontSize="Title"
-                HeightRequest="64"
-                WidthRequest="64"
-                CornerRadius="32"
-                BackgroundColor="#2196F3"
+        <Button ImageSource="{DynamicResource ic_add}"
+                HeightRequest="{DynamicResource height64}"
+                WidthRequest="{DynamicResource width64}"
+                CornerRadius="{DynamicResource radius32}"
+                BackgroundColor="{DynamicResource appcolor2}"
                 HorizontalOptions="End"
                 VerticalOptions="End"
                 Margin="16"

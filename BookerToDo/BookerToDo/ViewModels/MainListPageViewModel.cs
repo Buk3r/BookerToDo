@@ -1,7 +1,9 @@
 ﻿using BookerToDo.Extensions;
 using BookerToDo.Models.Task;
+using BookerToDo.Services.Authorization;
 using BookerToDo.Services.ToDoTask;
 using BookerToDo.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,10 +15,12 @@ namespace BookerToDo.ViewModels
     public class MainListPageViewModel : BaseViewModel
     {
         private readonly IToDoTaskService _toDoTaskService;
+        private readonly IAuthorizationService _authorizationService;
 
         public MainListPageViewModel()
         {
             _toDoTaskService = new ToDoTaskService();
+            _authorizationService = new AuthorizationService();
         }
 
         #region -- Public properties --
@@ -29,6 +33,7 @@ namespace BookerToDo.ViewModels
         }
 
         public ICommand AddTaskTapCommand => new Command(OnAddTaskTapCommand);
+        public ICommand LogOutTapCommand => new Command(OnLogOutTapCommand);
 
         #endregion
 
@@ -88,6 +93,12 @@ namespace BookerToDo.ViewModels
                 await _toDoTaskService.DeleteTaskAsync(task.ToModel());
                 await InitializeTasksAsync();
             }
+        }
+
+        private async void OnLogOutTapCommand()
+        {
+            _authorizationService.LogOut();
+            await NavigationService.AbsoluteNavigateAsync(new LoginPage());
         }
 
         #endregion

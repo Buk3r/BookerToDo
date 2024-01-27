@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms" 
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="BookerToDo.Resources.Styles.LightModeResources">
+
+    <Color x:Key="appcolor1">White</Color>
+    <Color x:Key="appcolor2">#2196F3</Color>
+    <Color x:Key="appcolor3">Gray</Color>
+    <Color x:Key="appcolor4">LightGray</Color>
+
+    <ImageSource x:Key="ic_add">ic_add</ImageSource>
+    <ImageSource x:Key="ic_exit_to_app">ic_exit_to_app</ImageSource>
+
+</ResourceDictionary>
