@@ -78,10 +78,10 @@ namespace BookerToDo.ViewModels
         private async void OnDeleteTaskTapCommand(TaskViewModel task)
         {
             var isDeleteConfirmed = await DialogService.DisplayAlert(
-                "Confirm",
-                "Do you want to delete task?",
-                "Yes",
-                "No");
+                Translate["Confirm"],
+                Translate["ConfirmDeleteTaskMessage"],
+                Translate["Yes"],
+                Translate["No"]);
 
             if (isDeleteConfirmed)
             {

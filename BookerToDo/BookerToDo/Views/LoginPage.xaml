@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseContentPage xmlns:views="clr-namespace:BookerToDo.Views"
+                       xmlns="http://xamarin.com/schemas/2014/forms"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       x:Class="BookerToDo.Views.LoginPage"
+                       Title="{Binding Translate[LogIn]}">
+
+    <Grid>
+
+        <Button Text="{Binding Translate[LogIn]}"
+                Command="{Binding LogInTapCommand}"
+                TextColor="White"
+                BackgroundColor="#2196F3"
+                TextTransform="None"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"/>
+
+    </Grid>
+    
+</views:BaseContentPage>

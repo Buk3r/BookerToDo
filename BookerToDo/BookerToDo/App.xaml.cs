@@ -1,4 +1,5 @@
-﻿using BookerToDo.Services.Navigation;
+﻿using BookerToDo.Services.Authorization;
+using BookerToDo.Services.Navigation;
 using BookerToDo.Views;
 using Xamarin.Forms;
 
@@ -11,8 +12,11 @@ namespace BookerToDo
             InitializeComponent();
 
             var navigationService = new NavigationService();
+            var authorizationService = new AuthorizationService();
 
-            navigationService.AbsoluteNavigateAsync(new MainListPage());
+            _ = !authorizationService.IsAuthorized
+                ? navigationService.AbsoluteNavigateAsync(new LoginPage())
+                : navigationService.AbsoluteNavigateAsync(new MainListPage());
         }
 
         protected override void OnStart()

@@ -7,19 +7,20 @@
 
     <StackLayout Padding="16, 16, 16, 16">
 
-        <Entry Placeholder="Title"
+        <Entry Placeholder="{Binding Translate[Title]}"
                Text="{Binding CurrentTask.Title}"
                MaxLength="50"/>
 
-        <Editor Placeholder="Description"
+        <Editor Placeholder="{Binding Translate[Description]}"
                 Text="{Binding CurrentTask.Description}"
                 HeightRequest="160"
                 MaxLength="200"/>
 
-        <Button Text="Save"
+        <Button Text="{Binding Translate[Save]}"
                 Command="{Binding SaveTaskTapCommand}"
                 TextColor="White"
                 BackgroundColor="#2196F3"
+                TextTransform="None"
                 VerticalOptions="EndAndExpand"/>
 
     </StackLayout>

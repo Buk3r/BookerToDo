@@ -49,13 +49,13 @@ namespace BookerToDo.ViewModels
             {
                 _toDoTask = task.ToViewModel();
                 CurrentTask = task.ToViewModel();
-                Title = "Edit task";
+                Title = Translate["EditTask"];
             }
             else
             {
                 _toDoTask = new TaskViewModel();
                 CurrentTask = new TaskViewModel();
-                Title = "Add task";
+                Title = Translate["AddTask"];
             }
         }
 
@@ -69,10 +69,10 @@ namespace BookerToDo.ViewModels
                 || CurrentTask.Description != _toDoTask.Description)
             {
                 var isDiscardConfirmed = await DialogService.DisplayAlert(
-                    "Confirm",
-                    "Do you want to discard changes?",
-                    "Yes",
-                    "No");
+                    Translate["Confirm"],
+                    Translate["ConfirmDiscardChangesMessage"],
+                    Translate["Yes"],
+                    Translate["No"]);
 
                 if (isDiscardConfirmed)
                 {
@@ -99,7 +99,10 @@ namespace BookerToDo.ViewModels
             }
             else
             {
-                await DialogService.DisplayAlert("Ooops", "Title must be not empty", "Ok");
+                await DialogService.DisplayAlert(
+                    Translate["Ooops"], 
+                    Translate["TitleMustBeNotEmpty"], 
+                    Translate["Ok"]);
             }
         }
 

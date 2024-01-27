@@ -4,7 +4,8 @@
                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                        xmlns:converters="clr-namespace:BookerToDo.Converters"
                        x:Class="BookerToDo.Views.MainListPage"
-                       Title="ToDo List">
+                       x:Name="page"
+                       Title="{Binding Translate[ToDoList]}">
 
     <Grid>
 
@@ -21,11 +22,11 @@
 
                         <ViewCell.ContextActions>
 
-                            <MenuItem Text="Edit"
+                            <MenuItem Text="{Binding BindingContext.Translate[Edit], Source={x:Reference page}}"
                                       Command="{Binding EditTapCommand}"
                                       CommandParameter="{Binding .}"/>
 
-                            <MenuItem Text="Delete"
+                            <MenuItem Text="{Binding BindingContext.Translate[Delete], Source={x:Reference page}}"
                                       Command="{Binding DeleteTapCommand}"
                                       CommandParameter="{Binding .}"/>
 

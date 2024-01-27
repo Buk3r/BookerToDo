@@ -1,4 +1,5 @@
 ﻿using BookerToDo.Resources.Strings;
+using BookerToDo.Services.SettingsManager;
 using System.ComponentModel;
 using System.Globalization;
 using System.Resources;
@@ -8,13 +9,15 @@ namespace BookerToDo.Services.Localization
     public class LocalizationService : ILocalizationService
     {
         private readonly ResourceManager _resourceManager;
+        private readonly ISettingsManager _settingsManager;
 
-        private LocalizationService _instance;
+        private static LocalizationService _instance;
         private CultureInfo _currentCultureInfo;
 
         private LocalizationService()
         {
             _resourceManager = new ResourceManager(typeof(Strings));
+            _settingsManager = new SettingsManager.SettingsManager();
             SelectCurrentLanguage();
         }
 
@@ -26,7 +29,7 @@ namespace BookerToDo.Services.Localization
 
         #region -- Public methods --
 
-        public LocalizationService GetInstance()
+        public static LocalizationService GetInstance()
         {
             if (_instance == null)
             {
@@ -45,6 +48,7 @@ namespace BookerToDo.Services.Localization
         public void SetCulture(CultureInfo culture)
         {
             _currentCultureInfo = culture;
+            _settingsManager.SelectedAppLanguage = culture.Name;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Item"));
         }
 
@@ -55,7 +59,16 @@ namespace BookerToDo.Services.Localization
         private void SelectCurrentLanguage()
         {
             var defaultLanguage = "en-US";
-            _currentCultureInfo = new CultureInfo(defaultLanguage);
+
+            if (_settingsManager.SelectedAppLanguage == string.Empty)
+            {
+                _currentCultureInfo = new CultureInfo(defaultLanguage);
+                _settingsManager.SelectedAppLanguage = defaultLanguage;
+            }
+            else
+            {
+                _currentCultureInfo = new CultureInfo(_settingsManager.SelectedAppLanguage);
+            }
         }
 
         #endregion

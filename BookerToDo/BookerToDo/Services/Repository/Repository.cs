@@ -18,7 +18,6 @@ namespace BookerToDo.Services.Repository
         {
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.DB_NAME);
             _connection = new SQLiteAsyncConnection(path);
-            CreateTablesAsync();
         }
 
         public static Repository GetInstance()
@@ -31,24 +30,28 @@ namespace BookerToDo.Services.Repository
             return _instance;
         }
 
-        public Task<int> InsertAsync<T>(T entity) where T : IEntityBase, new()
+        public async Task<int> InsertAsync<T>(T entity) where T : IEntityBase, new()
         {
-            return _connection.InsertAsync(entity);
+            await CreateTablesAsync();
+            return await _connection.InsertAsync(entity);
         }
 
-        public Task<List<T>> GetAllAsync<T>() where T : IEntityBase, new()
+        public async Task<List<T>> GetAllAsync<T>() where T : IEntityBase, new()
         {
-            return _connection.Table<T>().ToListAsync();
+            await CreateTablesAsync();
+            return await _connection.Table<T>().ToListAsync();
         }
 
-        public Task<int> UpdateAsync<T>(T entity) where T : IEntityBase, new()
+        public async Task<int> UpdateAsync<T>(T entity) where T : IEntityBase, new()
         {
-            return _connection.UpdateAsync(entity);
+            await CreateTablesAsync();
+            return await _connection.UpdateAsync(entity);
         }
 
-        public Task<int> DeleteAsync<T>(T entity) where T : IEntityBase, new()
+        public async Task<int> DeleteAsync<T>(T entity) where T : IEntityBase, new()
         {
-            return _connection.DeleteAsync(entity);
+            await CreateTablesAsync();
+            return await _connection.DeleteAsync(entity);
         }
 
         private async Task CreateTablesAsync()

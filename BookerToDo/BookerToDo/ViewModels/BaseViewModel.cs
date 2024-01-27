@@ -1,5 +1,6 @@
 ﻿using BookerToDo.Helpers;
 using BookerToDo.Services.Dialog;
+using BookerToDo.Services.Localization;
 using BookerToDo.Services.Navigation;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,14 @@ namespace BookerToDo.ViewModels
         {
             NavigationService = new NavigationService();
             DialogService = new DialogService();
+            Translate = LocalizationService.GetInstance();
         }
 
         #region -- Public properties --
 
         public INavigationService NavigationService { get; }
         public IDialogService DialogService { get; }
+        public ILocalizationService Translate { get; }
         public Action BackButtonPressedAction { get; protected set; }
 
         #endregion
