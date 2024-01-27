@@ -45,8 +45,7 @@ namespace BookerToDo.ViewModels
         {
             base.Initialize(parameters);
 
-            if (parameters.TryGetValue(Constants.Navigation.EDIT_TASK, out object parameter)
-                && parameter is TaskModel task)
+            if (parameters.TryGetValue(Constants.Navigation.EDIT_TASK, out TaskModel task))
             {
                 _toDoTask = task.ToViewModel();
                 CurrentTask = task.ToViewModel();
